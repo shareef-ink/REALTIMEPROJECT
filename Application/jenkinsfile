@@ -6,7 +6,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 echo 'Checking out source code'
-                git branch: 'main', url: 'https://github.com/devopstraininghub/REALTIMEPROJECT.git'
+                git branch: 'main', url: 'https://github.com/shareef-ink/REALTIMEPROJECT.git'
             }
         }
 
@@ -23,8 +23,8 @@ pipeline {
                 sh '''
                     cd Application
                     mvn sonar:sonar \
-                      -Dsonar.host.url=http://3.239.150.111:9000 \
-                      -Dsonar.login=squ_eca609a8ebe82a0f38ac90a19e6b9f805149247e
+                      -Dsonar.host.url=http://34.234.234.52:9000 \
+                      -Dsonar.login=squ_cfe448bc724fa2cb7281c049b27771de133d03c2
                 '''
             }
         }
@@ -33,14 +33,14 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    sh 'cd Application && docker build -t devopshubg333/k8s:${BUILD_NUMBER} -f Dockerfile .'
+                    sh 'cd Application && docker build -t skshareef/k8s:${BUILD_NUMBER} -f Dockerfile .'
                 }
             }
         }
 
         stage('Docker Image Scan') {
             steps {
-                sh 'trivy image devopshubg333/k8s:${BUILD_NUMBER}'
+                sh 'trivy image skshareef/k8s:${BUILD_NUMBER}'
             }
         }
 
@@ -48,9 +48,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-                        sh 'echo "${dockerhub}" | docker login -u devopshubg333 --password-stdin'
+                        sh 'echo "${dockerhub}" | docker login -u skshareef --password-stdin'
                     }
-                    sh 'docker push devopshubg333/k8s:${BUILD_NUMBER}'
+                    sh 'docker push skshareef/k8s:${BUILD_NUMBER}'
                 }
             }
         }
@@ -58,13 +58,13 @@ pipeline {
         stage('Update Kubernetes Deployment Manifest File') {
             environment {
                 GIT_REPO_NAME = "REALTIMEPROJECT"
-                GIT_USER_NAME = "devopstraininghub"
+                GIT_USER_NAME = "shareef-ink"
             }
             steps {
                 withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
                     sh '''
-                        git config user.email "madhu@gmail.com"
-                        git config user.name "madhu"
+                        git config user.email "shareef@gmail.com"
+                        git config user.name "shareef"
 
                         sed -i "s|k8s:.*|k8s:${BUILD_NUMBER}|g" Ansible/k8s_deployment.yaml
 
