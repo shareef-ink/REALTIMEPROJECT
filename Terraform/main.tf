@@ -6,7 +6,7 @@ provider "aws" {
 # ------------------------- KEY PAIR -------------------------
 resource "aws_key_pair" "key_pair" {
   key_name   = "MyKey"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC5+4VM5YvY6XEIecpSJYP2dUWav9nyJMaSq9bEa4S072b7sVMa9mMCpbo3iFOIRuUQaUnE/qydiRHchBUSWF43IPjnCoucOMEKX5xCJzFrlrZTJ5fOyM8UHZky68HupZjv6Zwe7r4e+qzRZ1kQVbh/AOEY0UZXIjQgbAzweggpa+oy88+Jg5KVo0J1T2GvpRS6/wWIR/19iB3S5VsmGHS/Tg+TVMbxKBhXpdOtheA6mQ77zxNIGUAHU6jjjmEbb+Xi5aJml7cnxITl+25F9sa0rSLPBqXXraBD8GOH5Hxs7qY38bgWwtmVWQmuKwvpFLPQT36S1xLs6CwnOuYRmfio0IA1VFlLCxtj9XZX+t+iA3UxyKA6AK1Z37QsCQtPZFwH5cgitTmVZ2BBv0n8qogP6Y6rsNLr0OLpFUfyekAGzk4d2/wvEgZAkDWM+eCAA6drW/yjjDnp7CrFagUOFpj7GOasWtpue1TlbhDLUNWp0GdJdObquf7ogmJ1MJkrtOE= Madhukiran@BOOK-6QJPLNSHMI"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCpYNgTTqIEnkxo+5bFw1KQtO9BXbOPnpnT7lK2p/Ctizu+HIelY1MtE79K3sh+fXjGd35a17h1T045ErrS5RYDCfm2e0Kw671AmzM9/87Yo6Z7IKB/MaR4Xv3pyZt0bM8gAkxtLYZ+z5X15gr/7/OJmos5UJK6jEfSij5XIqoS97aFQ2uv01pbbDxdjPYbMXfcLdnIaZ67oGCaghlcJPc/PaeCrhMHCYIQi6bj/mXTUtk/coE6Bs/8s6wLmcI2UdMRMKGrcPFGwIxgtrTUgkDAR6Ya2q+jfPdXtNal3QgynqK7oBFi5ii6vnLD3WybVLvWS8DHQkDforoWWLdKloZpGLbN2pVsfR1+Jq3cgS4lKrAFB12678b7ZzWPRzoQXyDRgEIO6TbvP830JsaRsii9JJ0/mhxzeOCKCsK8rb6RHT5Nrax1OYKK5JqfYu072kXxr2qESrrSWFJp/U+MtzoB60DiydmUxHByqV+gjTVteA1EtpKmIaOZkJaa84zqBBk= HP@DESKTOP-KH6VGQA"
 }
 
 # ------------------------- VPC -------------------------
@@ -145,8 +145,8 @@ resource "aws_security_group" "myapp_sg" {
 
 # ------------------------- JENKINS INSTANCE -------------------------
 resource "aws_instance" "jenkins" {
-  ami                    = "ami-002192a70217ac181"
-  instance_type          = "t2.large"
+  ami                    = "ami-01edba92f9036f76e"
+  instance_type          = "c7i-flex.large"
   subnet_id              = aws_subnet.public_subnet.id
   key_name               = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.jenkins_sg.id]
@@ -181,8 +181,8 @@ resource "aws_instance" "jenkins" {
 
 # ------------------------- MyApp INSTANCE -------------------------
 resource "aws_instance" "myapp" {
-  ami                    = "ami-002192a70217ac181"
-  instance_type          = "t2.micro"
+  ami                    = "ami-01edba92f9036f76e"
+  instance_type          = "c7i-flex.large"
   subnet_id              = aws_subnet.public_subnet.id
   key_name               = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.myapp_sg.id]
